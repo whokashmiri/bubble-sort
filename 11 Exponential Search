@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+// Function to perform binary search
+int binary_search(int arr[], int left, int right, int target) {
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        // Check if the target is at mid
+        if (arr[mid] == target) {
+            return mid;
+        }
+
+        // If target is smaller than mid, search the left half
+        if (arr[mid] > target) {
+            right = mid - 1;
+        }
+
+        // If target is larger, search the right half
+        else {
+            left = mid + 1;
+        }
+    }
+    return -1; // Element not found
+}
+
+// Function to perform exponential search
+int exponential_search(int arr[], int n, int target) {
+    // If the first element is the target
+    if (arr[0] == target) {
+        return 0;
+    }
+
+    // Find the range for binary search
+    int index = 1;
+    while (index < n && arr[index] <= target) {
+        index *= 2;
+    }
+
+    // Perform binary search in the range found
+    return binary_search(arr, index / 2, (index < n ? index : n - 1), target);
+}
+
+// Main function to test the exponential search
+int main() {
+    int arr[] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int target = 15;
+
+    int result = exponential_search(arr, n, target);
+
+    if (result != -1) {
+        printf("Element %d found at index %d.\n", target, result);
+    } else {
+        printf("Element %d not found.\n", target);
+    }
+
+    return 0;
+}
